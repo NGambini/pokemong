@@ -1,0 +1,9 @@
+<div>
+  <input type="text" [(ngModel)]="queryString">
+  <ul>
+    <li *ngFor="let pokemon of (pokemons$ | async | ngFuse:queryString:{keys: ['changes.name']})">
+      {{ pokemon | json }}
+    </li>
+  </ul>
+  {{ pokemons$ | async | json }}
+</div>

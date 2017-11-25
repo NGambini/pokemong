@@ -1,4 +1,4 @@
-import { ActionReducer, Action } from '@ngrx/store';
+import { ActionReducer, Action, createFeatureSelector, createSelector } from '@ngrx/store';
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 
 import * as PokemonActions from './pokemon.actions';
@@ -17,3 +17,9 @@ export function pokemonReducer(state = initialState, action: PokemonActions.All)
       return state;
   }
 }
+
+export const selectPokemonState = createFeatureSelector<EntityState<Pokemon>>('pokemons');
+
+export const { selectAll: selectAllPokemons } = adapter.getSelectors(
+  selectPokemonState
+);
