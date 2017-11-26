@@ -14,7 +14,7 @@ export class HeaderComponent {
   private searchSubject: Subject<string> = new Subject();
 
   constructor(private store: Store<AppState>) {
-    this.searchSubject.debounceTime(350).subscribe(searchValue => this.searchHandler(searchValue));
+    this.searchSubject.debounceTime(150).subscribe(searchValue => this.searchHandler(searchValue));
   }
 
   private searchHandler(string: string) {

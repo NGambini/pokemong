@@ -1,0 +1,18 @@
+<div class="card" *ngIf="pokemon">
+  <div class="card-img">
+    <img *ngIf="pokemon.sprites && pokemon.sprites.front_default"
+      [src]="pokemon.sprites.front_default">
+    <span *ngIf="!pokemon.sprites" class="spinner spinner-inverse">Loading...</span>
+  </div>
+  <div class="card-block">
+    <p class="card-text" style="text-transform: capitalize">
+      {{ pokemon.name }}
+    </p>
+  </div>
+  <div class="card-footer">
+    <div class="progress">
+      <progress value="0" max="100"></progress>
+    </div>
+    <a class="card-link">Click</a>
+  </div>
+</div>
