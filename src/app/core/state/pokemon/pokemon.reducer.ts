@@ -21,6 +21,8 @@ export function pokemonReducer(state = initialState, action: PokemonActions.All)
 
 export const selectPokemonState = createFeatureSelector<EntityState<Pokemon>>('pokemons');
 
-export const { selectAll: selectAllPokemons, selectIds: selectPokemonIds } = adapter.getSelectors(
-  selectPokemonState
-);
+export const {
+  selectAll: selectAllPokemons,
+  selectIds: selectPokemonIds,
+  selectEntities: selectPokemonEntities
+  } = adapter.getSelectors(selectPokemonState);

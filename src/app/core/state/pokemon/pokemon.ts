@@ -18,4 +18,9 @@ export class Pokemon {
   @autoserializeAs(Number) public weight: number;
   @autoserialize public sprites: any;
   @autoserializeAs(PokemonType) public types: Array<PokemonType>;
+
+  public get isLoaded() {
+    // This is a bit weak... need to find something else later
+    return this.height != null;
+  }
 }
