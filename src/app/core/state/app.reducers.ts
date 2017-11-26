@@ -3,6 +3,7 @@ import { combineReducers } from '@ngrx/store';
 import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { pokemonReducer as pokemons } from './pokemon/pokemon.reducer';
+import { typeReducer as types } from './type/type.reducer';
 
 import { AppState } from './app.state';
 
@@ -25,12 +26,15 @@ class Encrypter {
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  pokemons
+  pokemons,
+  types
 };
 
 export function localStorageSyncReducer(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
   return localStorageSync({
-    keys: [{ pokemons: { encrypt: Encrypter.encrypt, decrypt: Encrypter.decrypt } }],
+    keys: [
+      // { pokemons: { encrypt: Encrypter.encrypt, decrypt: Encrypter.decrypt } }
+      ],
     rehydrate: true
   })(reducer);
 }

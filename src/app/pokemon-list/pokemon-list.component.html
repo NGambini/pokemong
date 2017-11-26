@@ -1,9 +1,9 @@
 <div>
   <input type="text" [(ngModel)]="queryString">
   <ul>
-    <li *ngFor="let pokemon of (pokemons$ | async | ngFuse:queryString:{keys: ['changes.name']})">
+    <li *ngFor="let pokemon of (pokemons$ | async | ngFuse:queryString:{keys: ['name']})">
       {{ pokemon | json }}
+      <button type="button" (click)="viewPokemonDetail(pokemon.url)"> view pokemon detail</button>
     </li>
   </ul>
-  {{ pokemons$ | async | json }}
 </div>

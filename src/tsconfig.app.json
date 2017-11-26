@@ -9,5 +9,10 @@
   "exclude": [
     "test.ts",
     "**/*.spec.ts"
+  ],
+  "include": [
+    "**/*.ts",
+    "../node_modules/ng2-fuse/src/ngfuse.service.ts",
+    "../node_modules/ng2-fuse/src/ngfuse.pipe.ts"
   ]
 }
