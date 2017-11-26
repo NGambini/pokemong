@@ -9,6 +9,7 @@ import * as PokemonActions from '../core/state/pokemon/pokemon.actions';
 
 import { Pokemon } from '../core/state/pokemon/pokemon';
 import { UrlHelperService } from '../core/services/url-helper.service';
+import { UserInterfaceState } from '../core/state/user-interface/user-interface';
 
 @Component({
   selector: 'pkm-list',
@@ -17,10 +18,11 @@ import { UrlHelperService } from '../core/services/url-helper.service';
 })
 export class PokemonListComponent {
   public pokemons$: Observable<Array<Pokemon>>;
-  public queryString: string;
+  public uiState$: Observable<UserInterfaceState>;
 
   constructor(private store: Store<AppState>, private urlHelper: UrlHelperService) {
     this.pokemons$ = this.store.select(selectAllPokemons);
+    this.uiState$ = this.store.select('uiState');
     this.store.dispatch(new PokemonActions.GetAllPokemons());
   }
 

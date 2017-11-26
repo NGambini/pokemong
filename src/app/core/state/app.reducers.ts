@@ -4,6 +4,7 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 
 import { pokemonReducer as pokemons } from './pokemon/pokemon.reducer';
 import { typeReducer as types } from './type/type.reducer';
+import { userInterfaceReducer as uiState } from './user-interface/user-interface.reducer';
 
 import { AppState } from './app.state';
 
@@ -27,7 +28,8 @@ class Encrypter {
 
 export const reducers: ActionReducerMap<AppState> = {
   pokemons,
-  types
+  types,
+  uiState
 };
 
 export function localStorageSyncReducer(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
