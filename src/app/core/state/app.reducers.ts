@@ -35,7 +35,7 @@ export const reducers: ActionReducerMap<AppState> = {
 export function localStorageSyncReducer(reducer: ActionReducer<AppState>): ActionReducer<AppState> {
   return localStorageSync({
     keys: [
-      // { pokemons: { encrypt: Encrypter.encrypt, decrypt: Encrypter.decrypt } }
+      { pokemons: { encrypt: Encrypter.encrypt, decrypt: Encrypter.decrypt } }
       ],
     rehydrate: true
   })(reducer);

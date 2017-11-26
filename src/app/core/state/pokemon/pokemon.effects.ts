@@ -14,6 +14,7 @@ import { Pokemon, PokemonType } from './pokemon';
 
 import * as PokemonActions from './pokemon.actions';
 import * as TypeActions from '../type/type.actions';
+import { selectPokemonIds, selectAllPokemons } from './pokemon.reducer';
 
 
 @Injectable()
@@ -21,14 +22,18 @@ export class PokemonEffects {
   private readonly apiUrl = 'https://pokeapi.co/api/v2/';
   // TODO improvement : get that number from API then use it in another request
   private maxPokemons = 949;
-  constructor(private actions$: Actions, private http: HttpClient, store: Store<AppState>) { }
+  constructor(private actions$: Actions,
+              private http: HttpClient,
+              private store: Store<AppState>) { }
 
   @Effect()
   getAllPokemons$ = this.actions$
     // Listen for the 'GET_POKEMON' action
     .ofType(PokemonActions.GET_ALL_POKEMONS)
-    .switchMap((action: PokemonActions.GetAllPokemons) => {
-      return this.http.get(this.apiUrl + 'pokemon/', {
+    .combineLatest(this.store.select(selectPokemonIds))
+    .switchMap(([action, pokemonIds]: [PokemonActions.GetAllPokemons, number[]]) => {
+      // get the pokemon list only if not present in local storage
+      return pokemonIds.length !== this.maxPokemons ? (this.http.get(this.apiUrl + 'pokemon/', {
         params: new HttpParams().set('limit', this.maxPokemons.toString())
       }).map((res: any) => new PokemonActions.SetPokemonList({
         pokemons: res.results.map((pokemon, index) => {
@@ -36,7 +41,7 @@ export class PokemonEffects {
           entity.id = index + 1; // pokemons are returned sorted by id
           return entity;
         })
-      }));
+      }))) : Observable.of({ type: 'NO_ACTION' });
     });
 
   @Effect()
