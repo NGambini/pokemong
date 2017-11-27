@@ -13,6 +13,7 @@
       paginated view
       <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1" *ngFor="let pokemon of (paginatedPokemons$ | async)">
         <pkm-card [pokemon]="pokemon"></pkm-card>
+        <button type="button" (click)="viewPokemonDetail(pokemon.url)"> view pokemon detail</button>        
       </div>
     </div>
     <div class="pagination-buttons">

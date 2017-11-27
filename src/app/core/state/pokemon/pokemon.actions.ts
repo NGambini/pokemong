@@ -3,6 +3,7 @@ import { Pokemon } from './pokemon';
 
 export const GET_POKEMON = 'GET_POKEMON';
 export const GET_POKEMON_INDIRECT = 'GET_POKEMON_INDIRECT';
+export const GET_POKEMON_TYPE_RELATIONS = 'GET_POKEMON_TYPE_RELATIONS';
 export const GET_ALL_POKEMONS = 'GET_ALL_POKEMONS';
 export const SET_POKEMON_LIST = 'SET_POKEMON_LIST';
 export const UPDATE_POKEMON = 'UPDATE_POKEMON';

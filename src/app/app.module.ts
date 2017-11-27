@@ -11,6 +11,7 @@ import { CoreModule } from './core/core.module';
 import { AppComponent } from './app.component';
 import { PokemonListComponent } from './pokemon-list/pokemon-list.component';
 import { PokemonCardComponent } from './pokemon-card/pokemon-card.component';
+import { PokemonDetailComponent } from './pokemon-detail/pokemon-detail.component';
 import { HeaderComponent } from './layout/header.component';
 
 import { routes } from './app.routes';
@@ -29,6 +30,7 @@ import { routes } from './app.routes';
     AppComponent,
     PokemonListComponent,
     PokemonCardComponent,
+    PokemonDetailComponent,
     HeaderComponent
   ],
   providers: [NgFusePipe, NgFuseService],
