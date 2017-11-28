@@ -54,33 +54,14 @@ export class PokemonEffects {
     });
 
   @Effect()
-  getPokemonIndirect$ = this.actions$
-    // Listen for the 'GET_POKEMON' action
-    .ofType(PokemonActions.GET_POKEMON_INDIRECT)
-    .combineLatest(this.store.select(selectPokemonEntities))
-    .mergeMap(([action, pokemons]: [PokemonActions.GetPokemonIndirect, Dictionary<Pokemon>]) => {
-      const entityId = this.urlHelper.getPokemonIdFromUrl(action.payload.url);
-      console.log(action);
-      return !pokemons[entityId].isLoaded ? (this.http.get(action.payload.url)
-        .map((res: any) => new PokemonActions.UpdatePokemonIndirect({
-          pokemon: {
-            id: action.payload.id,
-            changes: Object.assign(Deserialize(res, Pokemon))
-          }
-        }))
-        .catch(error => Observable.of(new PokemonActions.FetchError(error))))
-        : Observable.of({ type: 'NO_ACTION' });
-    });
-
-  @Effect()
   getPokemon$ = this.actions$
     // Listen for the 'GET_POKEMON' action
     .ofType(PokemonActions.GET_POKEMON)
     .combineLatest(this.store.select(selectPokemonEntities))
     .mergeMap(([action, pokemons]: [PokemonActions.GetPokemon, Dictionary<Pokemon>]) => {
-      console.log(action);
       const entityId = this.urlHelper.getPokemonIdFromUrl(action.payload.url);
-      return !pokemons[entityId].isLoaded ? (this.http.get(action.payload.url)
+      // if height is null, pokemon wasnt fetched
+      return pokemons[entityId].height === undefined ? (this.http.get(action.payload.url)
         .map((res: any) => new PokemonActions.UpdatePokemon({
           pokemon: {
             id: action.payload.id,
@@ -92,11 +73,13 @@ export class PokemonEffects {
     });
 
   @Effect()
-  updatePokemon$ = this.actions$
-    .ofType(PokemonActions.UPDATE_POKEMON)
-    .mergeMap((action: PokemonActions.UpdatePokemon) =>
-      Observable.from(action.payload.pokemon.changes.types.map((pokemonType: PokemonType) =>
+  getPokemonTypeRelations$ = this.actions$
+    .ofType(PokemonActions.GET_POKEMON_TYPE_RELATIONS)
+    .combineLatest(this.store.select(selectPokemonEntities))
+    .switchMap(([action, pokemons]: [PokemonActions.GetPokemonTypeRelations, Dictionary<Pokemon>]) => {
+      const pokemon = pokemons[action.payload.pokemonId];
+      return Observable.from(pokemon.types.map((pokemonType: PokemonType) =>
         new TypeActions.GetType({ url: pokemonType.type.url }))
-      )
+      ); }
     );
 }

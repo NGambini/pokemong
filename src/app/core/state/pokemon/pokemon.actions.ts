@@ -2,12 +2,10 @@ import { Action } from '@ngrx/store';
 import { Pokemon } from './pokemon';
 
 export const GET_POKEMON = 'GET_POKEMON';
-export const GET_POKEMON_INDIRECT = 'GET_POKEMON_INDIRECT';
 export const GET_POKEMON_TYPE_RELATIONS = 'GET_POKEMON_TYPE_RELATIONS';
 export const GET_ALL_POKEMONS = 'GET_ALL_POKEMONS';
 export const SET_POKEMON_LIST = 'SET_POKEMON_LIST';
 export const UPDATE_POKEMON = 'UPDATE_POKEMON';
-export const UPDATE_POKEMON_INDIRECT = 'UPDATE_POKEMON_INDIRECT';
 export const FETCH_ERROR = 'FETCH_ERROR';
 
 export class GetAllPokemons implements Action {
@@ -16,17 +14,10 @@ export class GetAllPokemons implements Action {
   constructor() {}
 }
 
-// Gets a pokemon without triggering GET of its TYPE
-export class GetPokemonIndirect implements Action {
-  readonly type = GET_POKEMON_INDIRECT;
+export class GetPokemonTypeRelations implements Action {
+  readonly type = GET_POKEMON_TYPE_RELATIONS;
 
-  constructor(public payload: { id: number, url: string }) {}
-}
-
-export class UpdatePokemonIndirect implements Action {
-  readonly type = UPDATE_POKEMON_INDIRECT;
-
-  constructor(public payload: { pokemon: { id: number, changes: Pokemon } }) {}
+  constructor(public payload: { pokemonId: number }) {}
 }
 
 export class GetPokemon implements Action {
@@ -56,6 +47,6 @@ export class FetchError implements Action {
 export type All = GetPokemon |
                   GetAllPokemons |
                   UpdatePokemon |
-                  UpdatePokemonIndirect |
                   SetPokemonList |
-                  FetchError;
+                  FetchError |
+                  GetPokemonTypeRelations;

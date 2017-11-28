@@ -8,6 +8,15 @@ export class PokemonType {
   };
 }
 
+export class PokemonStat {
+  @autoserialize baseStat: number;
+  @autoserialize effort: number;
+  @autoserialize stat: {
+    name: string;
+    url: string;
+  };
+}
+
 export class Pokemon {
   // FROM GET_ALL_POKEMONS
   @autoserialize public name: string;
@@ -18,9 +27,5 @@ export class Pokemon {
   @autoserializeAs(Number) public weight: number;
   @autoserialize public sprites: any;
   @autoserializeAs(PokemonType) public types: Array<PokemonType>;
-
-  public get isLoaded() {
-    // This is a bit weak... need to find something else later
-    return this.height != null;
-  }
+  @autoserializeAs(PokemonStat) public stats: Array<PokemonStat>;
 }

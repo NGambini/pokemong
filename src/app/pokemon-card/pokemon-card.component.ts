@@ -17,12 +17,12 @@ export class PokemonCardComponent implements OnInit {
   constructor(private store: Store<AppState>, private urlService: UrlHelperService) { }
 
   public ngOnInit() {
-    // if component is rendered with unfetched pokemon, display get action
-    if (!this.pokemon.isLoaded) {
-      // this.store.dispatch(new PokemonActions.GetPokemonIndirect({
-      //   id: this.urlService.getPokemonIdFromUrl(this.pokemon.url),
-      //   url: this.pokemon.url
-      // }));
+    // if component is rendered with unfetched pokemon, dispatch get action
+    if (this.pokemon.height === undefined) {
+      this.store.dispatch(new PokemonActions.GetPokemon({
+        id: this.urlService.getPokemonIdFromUrl(this.pokemon.url),
+        url: this.pokemon.url
+      }));
     }
   }
 }

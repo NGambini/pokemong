@@ -20,7 +20,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class PokemonDetailComponent implements OnInit, OnDestroy {
   private routeParamsSubscription: Subscription;
-  public pokemon$: Observable<Pokemon>;
+  public pokemon: Pokemon;
 
   constructor(private store: Store<AppState>,
     private urlService: UrlHelperService,
@@ -28,18 +28,19 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeParamsSubscription = this.activatedRoute.params.subscribe((params: Params) => {
-      const routeId = params['id'];
-      console.log('found pokemon id:', routeId);
-      this.pokemon$ = this.store.select(selectAllPokemons).map((pokemons: Array<Pokemon>) =>
-        pokemons.find(p => p.id === routeId)
+      const routeId = parseInt(params['id'], 10);
+      this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) =>
+        this.pokemon = pokemons.find(p => p.id === routeId)
       );
     });
+  }
 
-    // // dispatch get in any case, it will be blocked in effect if we already have the data
-    // this.store.dispatch(new PokemonActions.GetPokemon({
-    //   id: this.urlService.getPokemonIdFromUrl(this.pokemon.url),
-    //   url: 
-    // }));
+  public getPokemonTypeRelations() {
+    this.store.dispatch(new PokemonActions.GetPokemonTypeRelations({ pokemonId: this.pokemon.id }));
+  }
+
+  public calculateAverageStats() {
+    this.store.dispatch(new PokemonActions.GetPokemonTypeRelations({ pokemonId: this.pokemon.id }));
   }
 
   ngOnDestroy() {

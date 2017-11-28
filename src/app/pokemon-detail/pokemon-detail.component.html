@@ -1,3 +1,7 @@
-pokemon detailed view
+<div *ngIf="pokemon">
 
 {{ pokemon | json }}
+<button (click)="getPokemonTypeRelations()">
+  get type relations
+</button>
+</div>

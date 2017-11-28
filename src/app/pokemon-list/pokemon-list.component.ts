@@ -35,14 +35,6 @@ export class PokemonListComponent {
         pokemons.slice(uiState.currentPage * uiState.perPage, (uiState.currentPage + 1) * uiState.perPage));
   }
 
-  public viewPokemonDetail(getUrl: string) {
-    this.store.dispatch(new PokemonActions.GetPokemon({
-      id: this.urlHelper.getPokemonIdFromUrl(getUrl),
-      url: getUrl
-    })
-    );
-  }
-
   public get canMoveBackward(): Observable<boolean> {
     return this.uiState$.map((uiState: UserInterfaceState) => uiState.currentPage > 0);
   }

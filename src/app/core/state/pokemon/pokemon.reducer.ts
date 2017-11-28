@@ -12,7 +12,6 @@ export function pokemonReducer(state = initialState, action: PokemonActions.All)
     case PokemonActions.SET_POKEMON_LIST:
       return adapter.addMany(action.payload.pokemons, state);
     case PokemonActions.UPDATE_POKEMON:
-    case PokemonActions.UPDATE_POKEMON_INDIRECT:
       return adapter.updateOne(action.payload.pokemon, state);
     default:
       return state;
