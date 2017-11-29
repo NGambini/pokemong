@@ -45,7 +45,7 @@ export class PokemonEffects {
       }).map((res: any) => new PokemonActions.SetPokemonList({
         pokemons: res.results.map((pokemon, index) => {
           const entity = Deserialize(pokemon, Pokemon);
-          entity.id = this.urlHelper.getPokemonIdFromUrl(pokemon.url);
+          entity.id = this.urlHelper.getIdFromUrl(pokemon.url);
           return entity;
         })
       }))
@@ -59,7 +59,7 @@ export class PokemonEffects {
     .ofType(PokemonActions.GET_POKEMON)
     .withLatestFrom(this.store.select(selectPokemonEntities))
     .mergeMap(([action, pokemons]: [PokemonActions.GetPokemon, Dictionary<Pokemon>]) => {
-      const entityId = this.urlHelper.getPokemonIdFromUrl(action.payload.url);
+      const entityId = this.urlHelper.getIdFromUrl(action.payload.url);
       // if height is null, pokemon wasnt fetched
       return pokemons[entityId].height === undefined ? (this.http.get(action.payload.url)
         .map((res: any) => new PokemonActions.UpdatePokemon({

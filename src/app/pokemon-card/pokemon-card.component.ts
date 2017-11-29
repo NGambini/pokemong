@@ -20,7 +20,7 @@ export class PokemonCardComponent implements OnInit {
     // if component is rendered with unfetched pokemon, dispatch get action
     if (this.pokemon.height === undefined) {
       this.store.dispatch(new PokemonActions.GetPokemon({
-        id: this.urlService.getPokemonIdFromUrl(this.pokemon.url),
+        id: this.urlService.getIdFromUrl(this.pokemon.url),
         url: this.pokemon.url
       }));
     }

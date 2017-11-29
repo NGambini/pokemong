@@ -48,7 +48,7 @@ export class TypeEffects {
   .switchMap((action: TypeActions.AddType) =>
     Observable.from(action.payload.type.pokemon.map((typePokemon: TypePokemon) => {
       return new PokemonActions.GetPokemon({
-        id: this.urlHelper.getPokemonIdFromUrl(typePokemon.pokemon.url),
+        id: this.urlHelper.getIdFromUrl(typePokemon.pokemon.url),
         url: typePokemon.pokemon.url
       });
     }))
@@ -60,18 +60,33 @@ export class TypeEffects {
     .withLatestFrom(this.store.select(selectPokemonEntities))
     .map(([action, pokemons]: [TypeActions.CalculateAverageStats, Dictionary<Pokemon>]) => {
       const statsValues = [];
+      const statAvgs = [];
       const pokemonsOfType = Object.entries(pokemons)
         .map(([str, pokemon]: [string, Pokemon]) => pokemon)
-        .filter((p: Pokemon) => p.types.some(t => t.type.name === action.payload.typeName));
-      pokemonsOfType.forEach((p: Pokemon) =>
+        .filter((p: Pokemon) => p.types && p.types.some(t => t.type.name === action.payload.typeName));
+      pokemonsOfType.forEach((p: Pokemon) => {
         p.stats.forEach((pStat: PokemonStat) => {
+          if (!statsValues[pStat.stat.name]) {
+            statsValues[pStat.stat.name] = [];
+          }
           statsValues[pStat.stat.name].push(pStat.baseStat);
-        })
+        });
+      }
       );
-      const statsAvgs = statsValues.map((statValues: Array<number>) => {
-        const sum = statValues.reduce(function(a, b) { return a + b; });
-        return sum / statValues.length;
-      });
-      return new TypeActions.SetAverageStats({ typeId: action.payload.typeId, stats: statsAvgs} );
+      for (const stat in statsValues) {
+        if (statsValues.hasOwnProperty(stat)) {
+          const sum = statsValues[stat].reduce(function(a, b) { return a + b; });
+          statAvgs[stat] = sum / statsValues[stat].length;
+          console.log(statAvgs);
+        }
+      }
+
+      return new TypeActions.SetAverageStats({ typeId: action.payload.typeId, stats: statAvgs} );
     });
 }
+
+/*
+const sum = statValues.reduce(function(a, b) { return a + b; });
+return sum / statValues.length;
+
+*/

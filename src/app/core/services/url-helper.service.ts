@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class UrlHelperService {
-  public getPokemonIdFromUrl(url: string) {
+  public getIdFromUrl(url: string) {
     const splitted = url.split('/');
     let last = '';
     while (last === '') {

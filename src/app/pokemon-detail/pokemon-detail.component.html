@@ -1,7 +1,8 @@
 <div *ngIf="pokemon">
 
 {{ pokemon | json }}
-<button (click)="getPokemonTypeRelations()">
-  get type relations
-</button>
+<button (click)="getPokemonTypeRelations()">{{ getPokemonTypeRelations }}</button>
+
+<button *ngFor="let type of pokemon.types" (click)="calculateAverageStats(type)">{{ type | json }}</button>
+
 </div>

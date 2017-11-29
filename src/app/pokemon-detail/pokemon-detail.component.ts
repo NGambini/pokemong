@@ -4,8 +4,9 @@ import { AppState } from '../core/state/app.state';
 import { Observable } from 'rxjs/Observable';
 import { Params } from '@angular/router';
 
-import { Pokemon } from '../core/state/pokemon/pokemon';
+import { Pokemon, PokemonType } from '../core/state/pokemon/pokemon';
 import * as PokemonActions from '../core/state/pokemon/pokemon.actions';
+import * as TypeActions from '../core/state/type/type.actions';
 import { UrlHelperService } from '../core/services/url-helper.service';
 import { selectAllPokemons } from '../core/state/pokemon/pokemon.reducer';
 import { ActivatedRoute } from '@angular/router';
@@ -39,8 +40,9 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
     this.store.dispatch(new PokemonActions.GetPokemonTypeRelations({ pokemonId: this.pokemon.id }));
   }
 
-  public calculateAverageStats() {
-    this.store.dispatch(new PokemonActions.GetPokemonTypeRelations({ pokemonId: this.pokemon.id }));
+  public calculateAverageStats(type: PokemonType) {
+    const typeId = this.urlService.getIdFromUrl(type.type.url);
+    this.store.dispatch(new TypeActions.CalculateAverageStats({ typeId: typeId, typeName: type.type.name }));
   }
 
   ngOnDestroy() {
