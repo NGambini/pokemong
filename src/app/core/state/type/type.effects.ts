@@ -57,7 +57,7 @@ export class TypeEffects {
   @Effect()
   calculateAverageStats$ = this.actions$
     .ofType(TypeActions.CALCULATE_AVERAGE_STATS)
-    .combineLatest(this.store.select(selectPokemonEntities))
+    .withLatestFrom(this.store.select(selectPokemonEntities))
     .map(([action, pokemons]: [TypeActions.CalculateAverageStats, Dictionary<Pokemon>]) => {
       const statsValues = [];
       const pokemonsOfType = Object.entries(pokemons)

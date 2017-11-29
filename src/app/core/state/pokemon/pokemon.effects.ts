@@ -37,7 +37,7 @@ export class PokemonEffects {
   getAllPokemons$ = this.actions$
     // Listen for the 'GET_POKEMON' action
     .ofType(PokemonActions.GET_ALL_POKEMONS)
-    .combineLatest(this.store.select(selectPokemonIds))
+    .withLatestFrom(this.store.select(selectPokemonIds))
     .switchMap(([action, pokemonIds]: [PokemonActions.GetAllPokemons, number[]]) => {
       // get the pokemon list only if not present in local storage
       return pokemonIds.length !== this.maxPokemons ? (this.http.get(this.apiUrl + 'pokemon/', {
@@ -57,7 +57,7 @@ export class PokemonEffects {
   getPokemon$ = this.actions$
     // Listen for the 'GET_POKEMON' action
     .ofType(PokemonActions.GET_POKEMON)
-    .combineLatest(this.store.select(selectPokemonEntities))
+    .withLatestFrom(this.store.select(selectPokemonEntities))
     .mergeMap(([action, pokemons]: [PokemonActions.GetPokemon, Dictionary<Pokemon>]) => {
       const entityId = this.urlHelper.getPokemonIdFromUrl(action.payload.url);
       // if height is null, pokemon wasnt fetched
@@ -75,8 +75,8 @@ export class PokemonEffects {
   @Effect()
   getPokemonTypeRelations$ = this.actions$
     .ofType(PokemonActions.GET_POKEMON_TYPE_RELATIONS)
-    .combineLatest(this.store.select(selectPokemonEntities))
-    .switchMap(([action, pokemons]: [PokemonActions.GetPokemonTypeRelations, Dictionary<Pokemon>]) => {
+    .withLatestFrom(this.store.select(selectPokemonEntities))
+    .mergeMap(([action, pokemons]: [PokemonActions.GetPokemonTypeRelations, Dictionary<Pokemon>]) => {
       const pokemon = pokemons[action.payload.pokemonId];
       return Observable.from(pokemon.types.map((pokemonType: PokemonType) =>
         new TypeActions.GetType({ url: pokemonType.type.url }))
