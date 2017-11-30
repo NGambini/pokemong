@@ -1,4 +1,10 @@
 <div *ngIf="pokemon" class="pokemon">
+  <div class="pokemon-picture">
+    <img [src]="!showReverse ? pokemon.sprites.front_default : pokemon.sprites.back_default">
+    <button (click)="showReverse = !showReverse" class="btn btn-primary">
+      <clr-icon shape="two-way-arrows"></clr-icon>
+    </button>
+  </div>
   <h1 class="pokemon-title">{{ pokemon.name }}</h1>
   <div class="pokemon-types">
     <span *ngFor="let pType of pokemon.types" class="label label-blue">
@@ -7,8 +13,6 @@
     </span>
   </div>
 
-  <img [src]="!showReverse ? pokemon.sprites.front_default : pokemon.sprites.back_default">
-  <button (click)="showReverse = !showReverse" class="btn btn-primary">{{ !showReverse ? 'show back' : 'show front' }}</button>
 
   <div class="pokemon-mensurations">
     <div class="pokemon-mensurations-item">

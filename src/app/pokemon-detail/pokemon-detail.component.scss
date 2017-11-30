@@ -6,6 +6,11 @@
     font-size: 20px;
     &-item {
       margin-top: 1em;
+      display: inline-block;
+      margin-right: 1em;
     }
+  }
+  &-picture {
+    float: right
   }
 }
