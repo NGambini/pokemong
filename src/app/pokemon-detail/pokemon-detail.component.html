@@ -1,8 +1,43 @@
-<div *ngIf="pokemon">
+<div *ngIf="pokemon" class="pokemon">
+  <h1 class="pokemon-title">{{ pokemon.name }}</h1>
+  <div class="pokemon-types">
+    <span *ngFor="let pType of pokemon.types" class="label label-blue">
+    {{ pType.type.name }}
+    <span class="badge">{{ pType.slot }}</span>
+    </span>
+  </div>
 
-{{ pokemon | json }}
-<button (click)="getPokemonTypeRelations()">{{ getPokemonTypeRelations }}</button>
+  <img [src]="!showReverse ? pokemon.sprites.front_default : pokemon.sprites.back_default">
+  <button (click)="showReverse = !showReverse" class="btn btn-primary">{{ !showReverse ? 'show back' : 'show front' }}</button>
 
-<button *ngFor="let type of pokemon.types" (click)="calculateAverageStats(type)">{{ type | json }}</button>
+  <div class="pokemon-mensurations">
+    <div class="pokemon-mensurations-item">
+      <clr-icon shape="arrow"></clr-icon>
+      {{ pokemon.height + ' cm' }}
+    </div>
+    <div class="pokemon-mensurations-item">
+      <clr-icon shape="block"></clr-icon>
+      {{ pokemon.weight / 10 + ' kg' }}
+    </div>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Stat</th>
+        <th style="text-transform: capitalize">{{ pokemon.name }}</th>
+        <th *ngFor="let pType of pokemon.types">{{ pType.type.name }} (avg.)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pStat of pokemon.stats">
+        <td style="font-weight: bold">{{ pStat.stat.name }}</td>
+        <td>{{ pStat.baseStat }}</td>
+        <td *ngFor="let pType of pokemon.types">{{ getAverageStatForType((typesForPokemon$ | async), pType.type.name, pStat.stat.name) }}</td>
+      </tr>
+    </tbody>
+  </table>
+  <button (click)="getPokemonTypeRelations()">getPokemonTypeRelations</button>
 
+  <button *ngFor="let pType of pokemon.types" (click)="calculateAverageStats(pType)">{{ pType | json }}</button>
+  <div *ngFor="let type of (typesForPokemon$ | async)"> {{ type | json }} </div>
 </div>

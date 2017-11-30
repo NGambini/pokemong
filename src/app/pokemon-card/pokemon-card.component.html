@@ -1,4 +1,4 @@
-<a class="card clickable" *ngIf="pokemon">
+<a [routerLink]="'/detail/' + pokemon.id" class="card clickable" *ngIf="pokemon">
   <div class="card-img">
     <img *ngIf="pokemon.sprites && pokemon.sprites.front_default"
       [src]="pokemon.sprites.front_default">

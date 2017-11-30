@@ -12,4 +12,5 @@ export class Type {
   @autoserializeAs(Number) id: number;
   @autoserialize name: string;
   @autoserializeAs(TypePokemon) pokemon: Array<TypePokemon>;
+  averageStats: Array<{name: string, value: number}>;
 }

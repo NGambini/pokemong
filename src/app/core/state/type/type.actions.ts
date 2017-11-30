@@ -27,7 +27,8 @@ export class CalculateAverageStats implements Action {
 export class SetAverageStats implements Action {
   readonly type = SET_AVERAGE_STATS;
 
-  constructor(public payload: { typeId, stats: Array<number> }) {}
+  constructor(public payload: { type: { id: number, changes: Partial<Type> } }) {
+  }
 }
 
 export type All = GetType | AddType | CalculateAverageStats | SetAverageStats;

@@ -6,6 +6,11 @@ import { PokemonDetailComponent } from './pokemon-detail/pokemon-detail.componen
 export const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
+    redirectTo: 'list',
+  },
+  {
+    path: 'list',
     component: PokemonListComponent
   },
   {

@@ -1,0 +1,11 @@
+.pokemon {
+  &-title {
+    text-transform: capitalize;
+  }
+  &-mensurations {
+    font-size: 20px;
+    &-item {
+      margin-top: 1em;
+    }
+  }
+}

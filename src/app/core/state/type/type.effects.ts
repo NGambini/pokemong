@@ -76,17 +76,17 @@ export class TypeEffects {
       for (const stat in statsValues) {
         if (statsValues.hasOwnProperty(stat)) {
           const sum = statsValues[stat].reduce(function(a, b) { return a + b; });
-          statAvgs[stat] = sum / statsValues[stat].length;
-          console.log(statAvgs);
+          statAvgs.push({ name: stat, value: sum / statsValues[stat].length });
         }
       }
 
-      return new TypeActions.SetAverageStats({ typeId: action.payload.typeId, stats: statAvgs} );
+      return new TypeActions.SetAverageStats({
+        type: {
+          id: action.payload.typeId,
+          changes: {
+            averageStats: statAvgs
+          }
+        }
+      });
     });
 }
-
-/*
-const sum = statValues.reduce(function(a, b) { return a + b; });
-return sum / statValues.length;
-
-*/
