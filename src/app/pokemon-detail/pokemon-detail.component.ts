@@ -35,15 +35,15 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    const headers = new HttpHeaders();
-    headers.set('Content-Type', 'application/X-www-form-urlencoded');
+    const headers = new HttpHeaders().set('Content-Type', 'application/X-www-form-urlencoded');
     this.types$ = this.store.select(selectAllTypes);
     this.routeParamsSubscription = this.activatedRoute.params.subscribe((params: Params) => {
       const routeId = parseInt(params['id'], 10);
       this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) => {
         this.pokemon = pokemons.find(p => p.id === routeId);
         this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
-          this.http.post('http://localhost:3000/search', { query: this.pokemon.name }, { headers: headers }).subscribe((res2) => {});
+          console.log('this.pokemon', this.pokemon);
+          this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((res2) => {});
         });
       });
     });
