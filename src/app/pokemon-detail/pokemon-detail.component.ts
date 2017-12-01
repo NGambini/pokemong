@@ -65,7 +65,7 @@ export class PokemonDetailComponent implements OnInit, OnDestroy, AfterViewCheck
   public loadTwitterWidgets(): void {
     this.tweetIds.forEach(id => {
       twttr.widgets.createTweet(
-        495719809695621121,
+        id,
         document.getElementById('tweet' + id),
         {
           theme: 'dark'
