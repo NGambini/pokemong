@@ -28,6 +28,7 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
   public pokemon: Pokemon;
   public types$: Observable<Array<Type>>;
   public showReverse = false;
+  public tweetIds = new Array<number>();
 
   constructor(private store: Store<AppState>,
     private urlService: UrlHelperService,
@@ -42,12 +43,21 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
       this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) => {
         this.pokemon = pokemons.find(p => p.id === routeId);
         this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
-          console.log('this.pokemon', this.pokemon);
-          this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((res2) => {});
+          this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((tweets: any) => {
+            this.tweetIds = tweets.data.statuses.map(status => status.id);
+          });
         });
       });
     });
   }
+
+//   twttr.widgets.createTweet(
+//   '20',
+//   document.getElementById('container'),
+//   {
+//     theme: 'dark'
+//   }
+// );
 
   public get typesForPokemon$(): Observable<Array<Type>> {
     return this.types$.map((types: Type[]) => {
