@@ -82,4 +82,14 @@ export class PokemonEffects {
         new TypeActions.GetType({ url: pokemonType.type.url }))
       ); }
     );
+
+  @Effect()
+  updatePokemon$ = this.actions$
+    .ofType(PokemonActions.UPDATE_POKEMON)
+    .mergeMap((action: PokemonActions.UpdatePokemon) => {
+      return Observable.from(action.payload.pokemon.changes.types.map((pokemonType: PokemonType) => {
+        const typeId = this.urlHelper.getIdFromUrl(pokemonType.type.url);
+        return new TypeActions.CalculateAverageStats({ typeId: typeId, typeName: pokemonType.type.name });
+      }));
+    });
 }

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, AfterViewChecked } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../core/state/app.state';
 import { Observable } from 'rxjs/Observable';
@@ -16,15 +16,17 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-
+// loaded by script tag
+declare var twttr: any;
 
 @Component({
   selector: 'pkm-detail-view',
   templateUrl: './pokemon-detail.component.html',
   styleUrls: ['./pokemon-detail.component.scss']
 })
-export class PokemonDetailComponent implements OnInit, OnDestroy {
+export class PokemonDetailComponent implements OnInit, OnDestroy, AfterViewChecked {
   private routeParamsSubscription: Subscription;
+  private tweetsLoaded = false;
   public pokemon: Pokemon;
   public types$: Observable<Array<Type>>;
   public showReverse = false;
@@ -42,22 +44,37 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
       const routeId = parseInt(params['id'], 10);
       this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) => {
         this.pokemon = pokemons.find(p => p.id === routeId);
-        this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
-          this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((tweets: any) => {
-            this.tweetIds = tweets.data.statuses.map(status => status.id);
-          });
-        });
+        // this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
+        //   this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((tweets: any) => {
+        //     this.tweetIds = tweets.data.statuses.map(status => status.id);
+        //   });
+        // });
+      });
+    });
+    this.tweetIds = [10, 20, 30, 40, 50];
+  }
+
+  public ngAfterViewChecked() {
+    if (!this.tweetsLoaded) {
+      this.loadTwitterWidgets();
+      this.tweetsLoaded = true;
+    }
+
+  }
+
+  public loadTwitterWidgets(): void {
+    this.tweetIds.forEach(id => {
+      twttr.widgets.createTweet(
+        495719809695621121,
+        document.getElementById('tweet' + id),
+        {
+          theme: 'dark'
+        }
+      ).then( function( el ) {
+        console.log("finished", el);
       });
     });
   }
-
-//   twttr.widgets.createTweet(
-//   '20',
-//   document.getElementById('container'),
-//   {
-//     theme: 'dark'
-//   }
-// );
 
   public get typesForPokemon$(): Observable<Array<Type>> {
     return this.types$.map((types: Type[]) => {

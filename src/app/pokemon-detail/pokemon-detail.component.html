@@ -13,7 +13,7 @@
     </span>
   </div>
 
-  <span *ngFor="let id of tweetIds">{{ id }}</span>
+  <div [id]="'tweet' + id" *ngFor="let id of tweetIds">{{ id }}</div>
 
   <div class="pokemon-mensurations">
     <div class="pokemon-mensurations-item">
@@ -42,7 +42,4 @@
     </tbody>
   </table>
   <button (click)="getPokemonTypeRelations()">getPokemonTypeRelations</button>
-
-  <button *ngFor="let pType of pokemon.types" (click)="calculateAverageStats(pType)">{{ pType | json }}</button>
-  <div *ngFor="let type of (typesForPokemon$ | async)"> {{ type | json }} </div>
 </div>
