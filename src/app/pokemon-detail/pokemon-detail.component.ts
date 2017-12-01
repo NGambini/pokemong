@@ -14,6 +14,7 @@ import { selectAllTypes } from '../core/state/type/type.reducer';
 
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 
@@ -30,15 +31,21 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<AppState>,
     private urlService: UrlHelperService,
+    private http: HttpClient,
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
+    const headers = new HttpHeaders();
+    headers.set('Content-Type', 'application/X-www-form-urlencoded');
     this.types$ = this.store.select(selectAllTypes);
     this.routeParamsSubscription = this.activatedRoute.params.subscribe((params: Params) => {
       const routeId = parseInt(params['id'], 10);
-      this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) =>
-        this.pokemon = pokemons.find(p => p.id === routeId)
-      );
+      this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) => {
+        this.pokemon = pokemons.find(p => p.id === routeId);
+        this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
+          this.http.post('http://localhost:3000/search', { query: this.pokemon.name }, { headers: headers }).subscribe((res2) => {});
+        });
+      });
     });
   }
 
