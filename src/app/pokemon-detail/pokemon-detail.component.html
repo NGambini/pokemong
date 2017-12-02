@@ -8,38 +8,72 @@
   <h1 class="pokemon-title">{{ pokemon.name }}</h1>
   <div class="pokemon-types">
     <span *ngFor="let pType of pokemon.types" class="label label-blue">
-    {{ pType.type.name }}
-    <span class="badge">{{ pType.slot }}</span>
+      {{ pType.type.name }}
+      <span class="badge">{{ pType.slot }}</span>
     </span>
   </div>
-
-  <div [id]="'tweet' + id" *ngFor="let id of tweetIds">{{ id }}</div>
-
-  <div class="pokemon-mensurations">
-    <div class="pokemon-mensurations-item">
+      <span class="pokemon-mensurations-item">
       <clr-icon shape="arrow"></clr-icon>
       {{ pokemon.height + ' cm' }}
-    </div>
-    <div class="pokemon-mensurations-item">
+    </span>
+    <span class="pokemon-mensurations-item">
       <clr-icon shape="block"></clr-icon>
       {{ pokemon.weight / 10 + ' kg' }}
-    </div>
-  </div>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Stat</th>
-        <th style="text-transform: capitalize">{{ pokemon.name }}</th>
-        <th *ngFor="let pType of pokemon.types">{{ pType.type.name }} (avg.)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let pStat of pokemon.stats">
-        <td style="font-weight: bold">{{ pStat.stat.name }}</td>
-        <td>{{ pStat.baseStat }}</td>
-        <td *ngFor="let pType of pokemon.types">{{ getAverageStatForType((typesForPokemon$ | async), pType.type.name, pStat.stat.name) }}</td>
-      </tr>
-    </tbody>
-  </table>
+    </span>
+
+  <clr-tabs>
+    <clr-tab>
+      <button clrTabLink id="link1">Tweets</button>
+      <clr-tab-content id="content1" *clrIfActive="true">
+        <div class="card-columns">
+          <div *ngFor="let item of tweets">
+            <div class="card">
+              <div class="card-block">
+                <div class="card-media-block">
+                  <img [src]="item.user.profile_image_url" class="card-media-image">
+                  <div class="card-media-description">
+                    <span class="card-media-title">
+                      {{ item.user.name }}
+                    </span>
+                    <span class="card-media-text">
+                      {{ item.user.location }}
+                    </span>
+                  </div>
+                </div>
+                <div class="card-text">
+                  {{ item.text }}
+                </div>
+              </div>
+              <div class="card-footer">
+                <a target="_blank" [href]="'https://twitter.com/statuses/' + item.id_str" class="btn btn-sm btn-link">View on twitter</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </clr-tab-content>
+    </clr-tab>
+    <clr-tab>
+      <button clrTabLink>Statistics</button>
+      <clr-tab-content *clrIfActive>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Stat</th>
+              <th style="text-transform: capitalize">{{ pokemon.name }}</th>
+              <th *ngFor="let pType of pokemon.types">{{ pType.type.name }} (avg.)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pStat of pokemon.stats">
+              <td style="font-weight: bold">{{ pStat.stat.name }}</td>
+              <td>{{ pStat.baseStat }}</td>
+              <td *ngFor="let pType of pokemon.types">{{ getAverageStatForType((typesForPokemon$ | async), pType.type.name, pStat.stat.name) }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </clr-tab-content>
+    </clr-tab>
+  </clr-tabs>
+
   <button (click)="getPokemonTypeRelations()">getPokemonTypeRelations</button>
 </div>

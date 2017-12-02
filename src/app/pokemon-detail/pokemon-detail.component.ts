@@ -24,13 +24,13 @@ declare var twttr: any;
   templateUrl: './pokemon-detail.component.html',
   styleUrls: ['./pokemon-detail.component.scss']
 })
-export class PokemonDetailComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class PokemonDetailComponent implements OnInit, OnDestroy {
   private routeParamsSubscription: Subscription;
   private tweetsLoaded = false;
   public pokemon: Pokemon;
   public types$: Observable<Array<Type>>;
   public showReverse = false;
-  public tweetIds = new Array<number>();
+  public tweets = new Array<any>();
 
   constructor(private store: Store<AppState>,
     private urlService: UrlHelperService,
@@ -44,34 +44,11 @@ export class PokemonDetailComponent implements OnInit, OnDestroy, AfterViewCheck
       const routeId = parseInt(params['id'], 10);
       this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) => {
         this.pokemon = pokemons.find(p => p.id === routeId);
-        // this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
-        //   this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((tweets: any) => {
-        //     this.tweetIds = tweets.data.statuses.map(status => status.id);
-        //   });
-        // });
-      });
-    });
-    this.tweetIds = [10, 20, 30, 40, 50];
-  }
-
-  public ngAfterViewChecked() {
-    if (!this.tweetsLoaded) {
-      this.loadTwitterWidgets();
-      this.tweetsLoaded = true;
-    }
-
-  }
-
-  public loadTwitterWidgets(): void {
-    this.tweetIds.forEach(id => {
-      twttr.widgets.createTweet(
-        id,
-        document.getElementById('tweet' + id),
-        {
-          theme: 'dark'
-        }
-      ).then( function( el ) {
-        console.log("finished", el);
+        this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
+          this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((tweets: any) => {
+            this.tweets = tweets.data.statuses;
+          });
+        });
       });
     });
   }
