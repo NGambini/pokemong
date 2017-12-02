@@ -9,7 +9,6 @@
   <!--If no search, display paginated view -->
   <div *ngIf="!(uiState$ | async).searchString">
     <div class="row">
-      paginated view
       <div class="col-xs-4 col-sm-3 col-md-2" *ngFor="let pokemon of (paginatedPokemons$ | async)">
         <pkm-card [pokemon]="pokemon"></pkm-card>
       </div>
