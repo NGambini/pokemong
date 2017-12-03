@@ -7,7 +7,7 @@ import { UserInterfaceState } from './user-interface';
 export const initialState: UserInterfaceState = {
   searchString: null,
   currentPage: 0,
-  maxPage: 9,
+  maxPage: 0,
   perPage: 35
 };
 
@@ -16,7 +16,7 @@ export function userInterfaceReducer(state = initialState, action: UserInterface
   switch (action.type) {
     case PokemonActions.SET_POKEMON_LIST:
       const totalPokemons = (action as PokemonActions.SetPokemonList).payload.pokemons.length;
-      const totalPages = Math.round(totalPokemons / state.perPage);
+      const totalPages = Math.floor(totalPokemons / state.perPage);
       return Object.assign({}, state, { maxPage: totalPages });
     case UserInterfaceActions.FIRST_PAGE:
       return Object.assign({}, state, { currentPage: 0 });
