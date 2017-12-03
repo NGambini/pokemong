@@ -38,8 +38,9 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 ## Backend
 
 To query tweets, a backend is required as embedded timelines do not support dynamic hashtags (need to create an unique widget ID).
-To start the server, run `npm run server`.
+Copy config file template : `cp server/config.js.tpl server/config.js`.
 You will need to set a _consumerkey_ and a _consumersecret_ in the file `server/config.js`. You can get yours here : https://apps.twitter.com/ 
+To start the server, run `npm run server`.
 
 ## Build
 
