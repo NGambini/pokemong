@@ -30,7 +30,6 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
   public pokemon: Pokemon;
   public types$: Observable<Array<Type>>;
   public showReverse = false;
-  public tweets = new Array<any>();
 
   constructor(private store: Store<AppState>,
     private urlService: UrlHelperService,
@@ -38,18 +37,18 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    const headers = new HttpHeaders().set('Content-Type', 'application/X-www-form-urlencoded');
     this.types$ = this.store.select(selectAllTypes);
     this.routeParamsSubscription = this.activatedRoute.params.subscribe((params: Params) => {
       const routeId = parseInt(params['id'], 10);
       this.store.select(selectAllPokemons).subscribe((pokemons: Array<Pokemon>) => {
         this.pokemon = pokemons.find(p => p.id === routeId);
-        this.http.post('http://localhost:3000/authorize', {headers: headers}).subscribe((res) => {
-          this.http.post('http://localhost:3000/search', 'query=' + this.pokemon.name, { headers: headers }).subscribe((tweets: any) => {
-            this.tweets = tweets.data.statuses;
-          });
-        });
       });
+      [
+        new PokemonActions.GetPokemonTweets({ pokemonId: routeId, sinceId: null }),
+        new PokemonActions.GetPokemonTypeRelations({ pokemonId: this.pokemon.id })
+      ]
+      .forEach((action: PokemonActions.All) => this.store.dispatch(action));
+
     });
   }
 
@@ -78,10 +77,6 @@ export class PokemonDetailComponent implements OnInit, OnDestroy {
       return -1;
     }
     return Math.round(avgStat.value);
-  }
-
-  public getPokemonTypeRelations() {
-    this.store.dispatch(new PokemonActions.GetPokemonTypeRelations({ pokemonId: this.pokemon.id }));
   }
 
   public calculateAverageStats(type: PokemonType) {

@@ -1,4 +1,4 @@
-# Pokemong
+# Pokemo-ng
 
 This project is a technical assesment for a job interview.
 It consists of writing a small web app to display pokemons, using data from http://pokeapi.co/. 

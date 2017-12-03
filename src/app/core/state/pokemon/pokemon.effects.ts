@@ -19,18 +19,20 @@ import { EntityState } from '@ngrx/entity';
 import { Dictionary } from '@ngrx/entity/src/models';
 
 import { UrlHelperService } from '../../services/url-helper.service';
+import { TwitterSearchService } from '../../services/twitter-search.service';
 
 
 @Injectable()
 export class PokemonEffects {
   private readonly apiUrl = 'https://pokeapi.co/api/v2/';
-  // TODO improvement : get that number from API then use it in another request
-  private maxPokemons = 949;
+  // TODO improvement : get that number from API by dispatching a first paginated request
+  private maxPokemons = 9999;
 
   constructor(private actions$: Actions,
               private http: HttpClient,
               private store: Store<AppState>,
-              private urlHelper: UrlHelperService) {
+              private urlHelper: UrlHelperService,
+              private twitterSearchService: TwitterSearchService) {
   }
 
   @Effect()
@@ -57,7 +59,9 @@ export class PokemonEffects {
   getPokemon$ = this.actions$
     // Listen for the 'GET_POKEMON' action
     .ofType(PokemonActions.GET_POKEMON)
+    // Bottleneck here : each UpdatePokemon triggers a select update
     .withLatestFrom(this.store.select(selectPokemonEntities))
+    .distinctUntilChanged()
     .mergeMap(([action, pokemons]: [PokemonActions.GetPokemon, Dictionary<Pokemon>]) => {
       const entityId = this.urlHelper.getIdFromUrl(action.payload.url);
       // if height is null, pokemon wasnt fetched
@@ -91,5 +95,19 @@ export class PokemonEffects {
         const typeId = this.urlHelper.getIdFromUrl(pokemonType.type.url);
         return new TypeActions.CalculateAverageStats({ typeId: typeId, typeName: pokemonType.type.name });
       }));
+    });
+
+  @Effect()
+  getPokemonTweets$ = this.actions$
+    .ofType(PokemonActions.GET_POKEMON_TWEETS)
+    .withLatestFrom(this.store.select(selectPokemonEntities))
+    .switchMap(([action, pokemons]: [PokemonActions.GetPokemonTweets, Dictionary<Pokemon>]) => {
+      const pokemon = pokemons[action.payload.pokemonId];
+      return this.twitterSearchService.getTweetsForTopic(pokemon.name, action.payload.sinceId).map(res => {
+        return new PokemonActions.AppendPokemonTweets({ pokemon:
+          { id: pokemon.id,
+            changes: { tweets: res.data.statuses }
+          } });
+      });
     });
 }

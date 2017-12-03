@@ -1,3 +1,7 @@
+<button [routerLink]="" class="btn btn-primary">
+  <clr-icon shape="undo"></clr-icon>
+  Back to listing
+</button>
 <div *ngIf="pokemon" class="pokemon">
   <div class="pokemon-picture">
     <img [src]="!showReverse ? pokemon.sprites.front_default : pokemon.sprites.back_default">
@@ -12,11 +16,11 @@
       <span class="badge">{{ pType.slot }}</span>
     </span>
   </div>
-      <span class="pokemon-mensurations-item">
+  <span class="pokemon-mensurations-item">
       <clr-icon shape="arrow"></clr-icon>
       {{ pokemon.height + ' cm' }}
     </span>
-    <span class="pokemon-mensurations-item">
+  <span class="pokemon-mensurations-item">
       <clr-icon shape="block"></clr-icon>
       {{ pokemon.weight / 10 + ' kg' }}
     </span>
@@ -26,7 +30,7 @@
       <button clrTabLink id="link1">Tweets</button>
       <clr-tab-content id="content1" *clrIfActive="true">
         <div class="card-columns">
-          <div *ngFor="let item of tweets">
+          <div *ngFor="let item of pokemon.tweets">
             <div class="card">
               <div class="card-block">
                 <div class="card-media-block">
@@ -74,6 +78,4 @@
       </clr-tab-content>
     </clr-tab>
   </clr-tabs>
-
-  <button (click)="getPokemonTypeRelations()">getPokemonTypeRelations</button>
 </div>

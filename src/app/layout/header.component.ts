@@ -24,4 +24,8 @@ export class HeaderComponent {
   public onInput(inputEvent: Event) {
     this.searchSubject.next(inputEvent.target['value']);
   }
+
+  public get inDetailView() {
+    return window.location.href.includes('detail');
+  }
 }

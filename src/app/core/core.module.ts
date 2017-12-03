@@ -7,6 +7,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers, metaReducers } from './state/app.reducers';
 import { AppEffects } from './state/app.effects';
 import { UrlHelperService } from './services/url-helper.service';
+import { TwitterSearchService } from './services/twitter-search.service';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { UrlHelperService } from './services/url-helper.service';
     StoreDevtoolsModule.instrument()
   ],
   providers: [
-    UrlHelperService
+    UrlHelperService,
+    TwitterSearchService
   ]
 })
 export class CoreModule { }

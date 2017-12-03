@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Pokemon } from './pokemon';
+import { Type } from '../type/type';
 
 export const GET_POKEMON = 'GET_POKEMON';
 export const GET_POKEMON_TYPE_RELATIONS = 'GET_POKEMON_TYPE_RELATIONS';
@@ -7,11 +8,25 @@ export const GET_ALL_POKEMONS = 'GET_ALL_POKEMONS';
 export const SET_POKEMON_LIST = 'SET_POKEMON_LIST';
 export const UPDATE_POKEMON = 'UPDATE_POKEMON';
 export const FETCH_ERROR = 'FETCH_ERROR';
+export const GET_POKEMON_TWEETS = 'GET_POKEMON_TWEETS';
+export const APPEND_POKEMON_TWEETS = 'APPEND_POKEMON_TWEETS';
 
 export class GetAllPokemons implements Action {
   readonly type = GET_ALL_POKEMONS;
 
   constructor() {}
+}
+
+export class GetPokemonTweets implements Action {
+  readonly type = GET_POKEMON_TWEETS;
+
+  constructor(public payload: { pokemonId: number, sinceId: string }) {}
+}
+
+export class AppendPokemonTweets implements Action {
+  readonly type = APPEND_POKEMON_TWEETS;
+
+  constructor(public payload: { pokemon: { id: number, changes: Partial<Pokemon> }} ) {}
 }
 
 export class GetPokemonTypeRelations implements Action {
@@ -49,4 +64,6 @@ export type All = GetPokemon |
                   UpdatePokemon |
                   SetPokemonList |
                   FetchError |
+                  GetPokemonTweets |
+                  AppendPokemonTweets |
                   GetPokemonTypeRelations;

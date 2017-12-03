@@ -45,7 +45,7 @@ export class TypeEffects {
   addType$ = this.actions$
   // Listen for the 'ADD_TYPE' action
   .ofType(TypeActions.ADD_TYPE)
-  .switchMap((action: TypeActions.AddType) =>
+  .mergeMap((action: TypeActions.AddType) =>
     Observable.from(action.payload.type.pokemon.map((typePokemon: TypePokemon) => {
       return new PokemonActions.GetPokemon({
         id: this.urlHelper.getIdFromUrl(typePokemon.pokemon.url),

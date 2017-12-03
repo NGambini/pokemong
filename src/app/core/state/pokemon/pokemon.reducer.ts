@@ -12,6 +12,7 @@ export function pokemonReducer(state = initialState, action: PokemonActions.All)
     case PokemonActions.SET_POKEMON_LIST:
       return adapter.addMany(action.payload.pokemons, state);
     case PokemonActions.UPDATE_POKEMON:
+    case PokemonActions.APPEND_POKEMON_TWEETS:
       return adapter.updateOne(action.payload.pokemon, state);
     default:
       return state;
@@ -24,4 +25,4 @@ export const {
   selectAll: selectAllPokemons,
   selectIds: selectPokemonIds,
   selectEntities: selectPokemonEntities
-  } = adapter.getSelectors(selectPokemonState);
+} = adapter.getSelectors(selectPokemonState);

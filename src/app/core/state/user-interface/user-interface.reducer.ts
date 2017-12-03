@@ -11,10 +11,13 @@ export const initialState: UserInterfaceState = {
   perPage: 35
 };
 
-export function userInterfaceReducer(state = initialState, action: UserInterfaceActions.All): UserInterfaceState {
+export function userInterfaceReducer(state = initialState, action: UserInterfaceActions.All | PokemonActions.All): UserInterfaceState {
   let newPage;
   switch (action.type) {
-
+    case PokemonActions.SET_POKEMON_LIST:
+      const totalPokemons = (action as PokemonActions.SetPokemonList).payload.pokemons.length;
+      const totalPages = Math.round(totalPokemons / state.perPage);
+      return Object.assign({}, state, { maxPage: totalPages });
     case UserInterfaceActions.FIRST_PAGE:
       return Object.assign({}, state, { currentPage: 0 });
     case UserInterfaceActions.LAST_PAGE:

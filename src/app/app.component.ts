@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { TwitterSearchService } from './core/services/twitter-search.service';
 
 @Component({
   selector: 'pkm-root',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app';
+  constructor(private twitterSearchService: TwitterSearchService) {
+    this.twitterSearchService.authorize();
+  }
 }

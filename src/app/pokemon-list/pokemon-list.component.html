@@ -1,4 +1,6 @@
 <div>
+  <!--Common spinner -->
+  <div *ngIf="!(pokemons$ | async)" class="spinner spinner-inverse loading-spinner">Loading pokemons...</div>
   <!-- Search results -->
   <div class="row" *ngIf="(uiState$ | async).searchString">
     <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1" *ngFor="let pokemon of (pokemons$ | async | ngFuse: (uiState$ | async)

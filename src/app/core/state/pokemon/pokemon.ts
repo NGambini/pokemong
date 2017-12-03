@@ -1,5 +1,7 @@
 import { autoserialize, autoserializeAs } from 'cerialize';
 
+import { Tweet } from '../tweet/tweet';
+
 export class PokemonType {
   @autoserialize slot: Number;
   @autoserialize type: {
@@ -19,13 +21,14 @@ export class PokemonStat {
 
 export class Pokemon {
   // FROM GET_ALL_POKEMONS
-  @autoserialize public name: string;
+  @autoserialize name: string;
   @autoserialize url: string;
-  @autoserializeAs(Number) public id: number;
+  @autoserializeAs(Number) id: number;
   // FROM GET_POKEMON
-  @autoserializeAs(Number) public height: number;
-  @autoserializeAs(Number) public weight: number;
-  @autoserialize public sprites: any;
-  @autoserializeAs(PokemonType) public types: Array<PokemonType>;
-  @autoserializeAs(PokemonStat) public stats: Array<PokemonStat>;
+  @autoserializeAs(Number) height: number;
+  @autoserializeAs(Number) weight: number;
+  @autoserialize sprites: any;
+  @autoserializeAs(PokemonType) types: Array<PokemonType>;
+  @autoserializeAs(PokemonStat) stats: Array<PokemonStat>;
+  @autoserializeAs(Tweet) tweets: Array<Tweet>;
 }
