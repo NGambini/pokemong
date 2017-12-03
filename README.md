@@ -34,6 +34,7 @@ related to that pokemon.
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Make sure the backend server is running (see below)
 
 ## Backend
 
@@ -41,6 +42,10 @@ To query tweets, a backend is required as embedded timelines do not support dyna
 Copy config file template : `cp server/config.js.tpl server/config.js`.
 You will need to set a _consumerkey_ and a _consumersecret_ in the file `server/config.js`. You can get yours here : https://apps.twitter.com/ 
 To start the server, run `npm run server`.
+
+## Unit tests
+
+To run the tests, type `ng test`.
 
 ## Known issues
 
