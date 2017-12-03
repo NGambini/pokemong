@@ -42,14 +42,6 @@ Copy config file template : `cp server/config.js.tpl server/config.js`.
 You will need to set a _consumerkey_ and a _consumersecret_ in the file `server/config.js`. You can get yours here : https://apps.twitter.com/ 
 To start the server, run `npm run server`.
 
-## Build
+## Known issues
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+- When in the pokemon detail page, the UI can get laggy while querying pokemons (all type-related pokemons need to be requested to compute average stats.

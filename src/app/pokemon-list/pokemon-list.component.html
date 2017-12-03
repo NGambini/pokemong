@@ -3,7 +3,7 @@
   <div *ngIf="!(pokemons$ | async)" class="spinner spinner-inverse loading-spinner">Loading pokemons...</div>
   <!-- Search results -->
   <div class="row" *ngIf="(uiState$ | async).searchString">
-    <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1" *ngFor="let pokemon of (pokemons$ | async | ngFuse: (uiState$ | async)
+    <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2" *ngFor="let pokemon of (pokemons$ | async | ngFuse: (uiState$ | async)
         .searchString:{keys: ['name']})">
       <pkm-card [pokemon]="pokemon"></pkm-card>
     </div>
@@ -11,7 +11,7 @@
   <!--If no search, display paginated view -->
   <div *ngIf="!(uiState$ | async).searchString">
     <div class="row">
-      <div class="col-xs-4 col-sm-3 col-md-2" *ngFor="let pokemon of (paginatedPokemons$ | async)">
+      <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2" *ngFor="let pokemon of (paginatedPokemons$ | async)">
         <pkm-card [pokemon]="pokemon"></pkm-card>
       </div>
     </div>

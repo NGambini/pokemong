@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from 'clarity-angular';
-import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgFuseModule, NgFusePipe, NgFuseService } from 'ng2-fuse';
 
 import { CoreModule } from './core/core.module';
@@ -24,7 +23,6 @@ import { routes } from './app.routes';
     HttpClientModule,
     CoreModule,
     ClarityModule.forRoot(),
-    InfiniteScrollModule,
     NgFuseModule,
     RouterModule.forRoot(routes)
   ],
